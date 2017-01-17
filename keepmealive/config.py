@@ -9,7 +9,7 @@ class BaseConfig(object):
     PROJECT_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
     DEBUG = False
     TESTING = False
-    SECRET_KEY = 'secret key'
+    SECRET_KEY = 'keepmesecretlyalive'
     LOG_FOLDER = os.path.join(INSTANCE_FOLDER_PATH, 'logs')
 
 class DefaultConfig(BaseConfig):

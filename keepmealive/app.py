@@ -1,26 +1,36 @@
 from flask import Flask
-from flask_script import Manager, Command
+from flask_script import Manager
 from flask_migrate import MigrateCommand
 from keepmealive.config import DefaultConfig
 from keepmealive.utils import INSTANCE_FOLDER_PATH
 from keepmealive.extensions import db, jwt, migrate
 
 
-__all__ = ['create_app']
+__all__ = ['create_app', 'create_migration']
 
-def create_app(config=None, app_name=None):
 
+def init_app(config=None, app_name=None):
     if app_name is None:
         app_name = DefaultConfig.PROJECT
 
     app = Flask(app_name, instance_path=INSTANCE_FOLDER_PATH, instance_relative_config=True)
     configure_app(app, config)
+    return app
+
+def create_app(config=None, app_name=None):
+
+    app = init_app(config, app_name)
     configure_logging(app)
     configure_hook(app)
     configure_blueprints(app)
     configure_extensions(app)
-    configure_migration(app)
+    return app
 
+def create_migration(config=None, app_name=None):
+
+    app = init_app(config, app_name)
+    configure_extensions(app, True)
+    configure_migration(app)
     return app
 
 def configure_app(app, config=None):
@@ -36,10 +46,11 @@ def configure_blueprints(app):
     from keepmealive.api import api
     app.register_blueprint(api)
 
-def configure_extensions(app):
+def configure_extensions(app, migration=False):
     """ configure flask sqlalchemy"""
     db.init_app(app)
-    jwt.init_app(app)
+    if not migration:
+        jwt.init_app(app)
 
 def configure_logging(app):
     """ Configure file logging"""
