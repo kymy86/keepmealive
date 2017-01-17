@@ -33,8 +33,8 @@ def index():
 def protected():
     return jsonify(msg='Halo Halo')
 
-@api.route('/freeforall', methods=['GET'])
-def freeforall():
+@api.route('/free', methods=['GET'])
+def free():
     return jsonify(msg='Hello world')
 
 

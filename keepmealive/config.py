@@ -18,7 +18,7 @@ class DefaultConfig(BaseConfig):
     DEBUG = True
     SQLALCHEMY_ECHO = False
     SQLALCHEMY_TRACK_MODIFICATIONS = True
-    SQLALCHEMY_DATABASE_URI = 'postgresql://{username}:{password}@{server_name}:{port}/{db_name}'.format(
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://{username}:{password}@{server_name}:{port}/{db_name}'.format(
         username=os.environ['POSTGRES_USER'],
         password=os.environ['POSTGRES_PASSWORD'],
         server_name=os.environ['POSTGRES_ADDR'],

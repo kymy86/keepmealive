@@ -1,5 +1,5 @@
 from flask import Flask
-from flask_script import Manager
+from flask_script import Manager, Command
 from flask_migrate import MigrateCommand
 from keepmealive.config import DefaultConfig
 from keepmealive.utils import INSTANCE_FOLDER_PATH
@@ -19,7 +19,7 @@ def create_app(config=None, app_name=None):
     configure_hook(app)
     configure_blueprints(app)
     configure_extensions(app)
-    configure_cli(app)
+    configure_migration(app)
 
     return app
 
@@ -53,7 +53,10 @@ def configure_logging(app):
     app.logger.setLevel(logging.INFO)
 
     info_log = os.path.join(app.config['LOG_FOLDER'], 'info.log')
-    info_file_handler = logging.handlers.RotatingFileHandler(info_log, maxBytes=100000, backupCount=10)
+    info_file_handler = logging.handlers.RotatingFileHandler(
+        info_log,
+        maxBytes=100000,
+        backupCount=10)
     info_file_handler.setLevel(logging.INFO)
     info_file_handler.setFormatter(logging.Formatter(
         '%(asctime)s %(levelname)s: %(message)s '
@@ -67,11 +70,21 @@ def configure_hook(app):
     def before_request():
         pass
 
-def configure_cli(app):
+def configure_migration(app):
     migrate.init_app(app, db)
     manager = Manager(app)
     manager.add_command('db', MigrateCommand)
 
-    @app.cli.command()
-    def run():
-        manager.run()
+    @manager.command
+    def drop_all():
+        import keepmealive.api.models
+        db.drop_all()
+
+    @manager.command
+    def create_all():
+        import keepmealive.api.models
+        db.create_all()
+
+    manager.run()
+
+

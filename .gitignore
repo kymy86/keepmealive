@@ -90,5 +90,4 @@ ENV/
 
 #Mac
 .DS_Store
-
-#Custom
+migrations/
