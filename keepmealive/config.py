@@ -1,6 +1,6 @@
 import os
 import datetime
-from keepmealive.utils import make_dir, INSTANCE_FOLDER_PATH
+from keepmealive.utils import INSTANCE_FOLDER_PATH
 
 class BaseConfig(object):
     """ Default configuration """
@@ -12,7 +12,7 @@ class BaseConfig(object):
     SECRET_KEY = 'keepmesecretlyalive'
     LOG_FOLDER = os.path.join(INSTANCE_FOLDER_PATH, 'logs')
 
-class DefaultConfig(BaseConfig):
+class   DefaultConfig(BaseConfig):
     """ If nothing else is defined, use these configs"""
 
     DEBUG = True

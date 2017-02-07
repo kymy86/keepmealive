@@ -14,10 +14,6 @@ def index():
 def protected():
     return jsonify(msg='Halo Halo')
 
-@api.route('/login', methods=['POST'])
-def login():
-    return jsonify(msg='Hello world')
-
 
 
     

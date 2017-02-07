@@ -5,7 +5,6 @@ from keepmealive.config import DefaultConfig
 from keepmealive.utils import INSTANCE_FOLDER_PATH
 from keepmealive.extensions import db, jwt, migrate
 
-
 __all__ = ['create_app', 'create_migration']
 
 
@@ -95,6 +94,13 @@ def configure_migration(app):
     def create_all():
         import keepmealive.api.models
         db.create_all()
+
+    @manager.command
+    def seed():
+        from keepmealive.api.models import User
+        admin = User('kymy', 'kymy@test.com', 'password')
+        db.session.add(admin)
+        db.session.commit()
 
     manager.run()
 
