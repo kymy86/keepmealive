@@ -4,3 +4,4 @@ djangorestframework==3.5.4
 markdown==2.6.8
 django-filter==1.0.1
 psycopg2
+djangorestframework-jwt
