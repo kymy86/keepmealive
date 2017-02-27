@@ -14,25 +14,18 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url, include
-from django.contrib.auth.models import User
-from rest_framework import serializers, viewsets, routers
+from rest_framework.routers import DefaultRouter
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token, verify_jwt_token
+from keepmealive.views import UserViewSet
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = User
-        fields = ('url', 'username', 'email', 'is_staff')
-
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
-router = routers.DefaultRouter()
+router = DefaultRouter()
 router.register(r'users', UserViewSet)
 
 urlpatterns = [
-    url(r'^', include(router.urls)),
-    url(r'^api-token-auth/', obtain_jwt_token),
-    url(r'^api-token-refresh/', refresh_jwt_token),
-    url(r'^api-token-verify/', verify_jwt_token)
+    url(r'^api/users/', include(router.urls)),
+    url(r'^api/folders/', include('folders.urls')),
+    url(r'^api/auth/token/', obtain_jwt_token),
+    url(r'^api/refresh/token/', refresh_jwt_token),
+    url(r'^api/verify/token/', verify_jwt_token),
 ]
+

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
+import datetime
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -21,6 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'wpjrv+uwchwqzk85^di2pm-8h*%)h0)wzstnbphu_06y-^iwpn'
+MASTER_KEY = '&3Z32(@y6Xg"^k[!EJ|G.X*Yfxp5>os,5rhspKWmK)fT~A^+t[nMN<nYX}e*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,8 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #third parties
     'rest_framework',
-    'keepmealive'
+    #local apps
+    'keepmealive',
+    'folders',
+    'items'
 ]
 
 MIDDLEWARE = [
@@ -52,6 +58,10 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'keepmealive.urls'
+
+JWT_AUTH = {
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=3000)
+}
 
 TEMPLATES = [
     {
@@ -71,11 +81,13 @@ TEMPLATES = [
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+        'rest_framework.permissions.IsAuthenticated'
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication'
-    ]
+    ],
+    'PAGE_SIZE': 10,
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination'
 }
 
 WSGI_APPLICATION = 'keepmealive.wsgi.application'
