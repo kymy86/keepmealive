@@ -22,10 +22,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'wpjrv+uwchwqzk85^di2pm-8h*%)h0)wzstnbphu_06y-^iwpn'
-MASTER_KEY = '&3Z32(@y6Xg"^k[!EJ|G.X*Yfxp5>os,5rhspKWmK)fT~A^+t[nMN<nYX}e*'
+MASTER_KEY = os.environ['MASTER_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ['DEBUG']
 
 ALLOWED_HOSTS = []
 
@@ -86,6 +86,14 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication'
     ],
+    'DEFAULT_THROTTLE_CLASS': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '10/day',
+        'user': '100/day',
+    },
     'PAGE_SIZE': 10,
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination'
 }
@@ -145,3 +153,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# email variables
+
+FROM_EMAIL = 'noreply@keemealive.com'
+EMAIL_HOST_USER = os.environ['SMTP_USER']
+EMAIL_HOST_PASSWORD = os.environ['SMTP_PASS']
+EMAIL_PORT = os.environ['SMTP_PORT']
+EMAIL_HOST = os.environ['SMTP_HOST']

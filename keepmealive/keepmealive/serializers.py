@@ -6,3 +6,12 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         model = User
         fields = ('url', 'username', 'email')
 
+class PasswordResetSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
+    hash = serializers.UUIDField(required=True)
+    password = serializers.CharField(required=True)
+
+
+
+
+
