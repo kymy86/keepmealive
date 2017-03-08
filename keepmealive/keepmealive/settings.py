@@ -95,7 +95,8 @@ REST_FRAMEWORK = {
         'user': '100/day',
     },
     'PAGE_SIZE': 10,
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination'
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json'
 }
 
 WSGI_APPLICATION = 'keepmealive.wsgi.application'
