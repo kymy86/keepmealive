@@ -7,6 +7,9 @@ from django.contrib.auth.models import User
 
 class AuthorizeTest(APITestCase):
 
+    """
+    Create a new user
+    """
     def setUp(self):
         self.user = User.objects.create_user(
             username='test',
