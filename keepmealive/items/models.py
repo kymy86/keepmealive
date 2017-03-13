@@ -23,7 +23,7 @@ class Item(models.Model):
         secret = AES.new(settings.MASTER_KEY[:32])
         raw_decrypt = secret.decrypt(base64.b64decode(self.password))
         clear_val = raw_decrypt.rstrip(b"\0")
-        return clear_val
+        return clear_val.decode('utf-8')
 
 @receiver(pre_save, sender=Item)
 def encrypt_password(sender, instance, *args, **kwargs):
