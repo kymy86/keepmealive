@@ -1,0 +1,11 @@
+POSTGRES_PASSWORD=keepmealive_travis
+POSTGRES_USER=travis
+POSTGRES_DB=kpatravis_db
+POSTGRES_ADDR=postgresdb
+POSTGRES_PORT=5432
+MASTER_KEY=KBEuhh37EtfKLc0WB16dSmSxh74q9Gz3FnYqctRdTpeOFTBDzX3gDxV8iol4F7S
+SMTP_PASS=smtp_pass
+SMTP_USER=smtp_user
+SMTP_HOST=smtp_host
+SMTP_PORT=smtp_port
+DEBUG=True
