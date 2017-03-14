@@ -19,6 +19,9 @@ class FolderTests(APITestCase):
         response = self.client.post(url, data, format='json')
         self.token = response.data['token']
 
+    """
+    Test folder creation
+    """
     def test_create_folder(self):
         url = '/api/folders/folder/'
         data = {
@@ -33,6 +36,9 @@ class FolderTests(APITestCase):
         self.assertEqual(Folder.objects.count(), 1)
         self.assertEqual(Folder.objects.get().name, 'test folder')
 
+    """
+    Test folder updating
+    """
     def test_update_folder(self):
 
         folder = Folder.objects.create(name='test folder', idparent=0)
@@ -48,6 +54,9 @@ class FolderTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(Folder.objects.get().name, 'Test folder updated')
 
+    """
+    Test folder deletion
+    """
     def test_delete_folder(self):
         folder = Folder.objects.create(name='test folder', idparent=0)
         url = '/api/folders/folder/'+str(folder.id)+"/"
