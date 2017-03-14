@@ -55,4 +55,4 @@ class FolderTests(APITestCase):
             'HTTP_AUTHORIZATION': 'JWT {}'.format(self.token)
         }
         response = self.client.delete(url, format='json', **header)
-        self.assertEqual(response.status_code, status.HTTP_202_ACCEPTED)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)

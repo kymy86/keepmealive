@@ -1,0 +1,12 @@
+sudo: required
+services:
+  - docker
+language:
+  - python
+python:
+  - "3.6"
+before_install:
+  - docker-compose up -d
+  - docker exec -it keepmealive_web_1 python keepmealive/manage.py test keepmealive
+after_success:
+  - docker-compose down
