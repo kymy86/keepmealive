@@ -15,8 +15,9 @@ before_install:
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
 before_script:
+  - sudo service postgresl stop
   - mv env_travis .env
-  - netstat -nlpt | grep 5432
+  - sudo netstat -plntu
   - docker ps -a
   - docker-compose up --build
 script:
