@@ -16,8 +16,8 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
 before_script:
   - mv env_travis .env
-  - docker-compose ps
   - docker-compose config
+  - sudo /etc/init.d/postgresql stop
   - docker-compose up --build
 script:
   - docker exec -it keepmealive_web_1 python keepmealive/manage.py test keepmealive
