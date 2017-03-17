@@ -18,8 +18,8 @@ before_script:
   - mv env_travis .env
   - docker-compose config
   - sudo /etc/init.d/postgresql stop
-  - docker-compose up --build -d
 script:
+  - docker-compose up -d
   - docker exec -it keepmealive_web_1 python keepmealive/manage.py test keepmealive
 after_success:
   - docker-compose down
