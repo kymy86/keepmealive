@@ -22,6 +22,8 @@ script:
   - docker-compose up --build -d
   - docker-compose ps
   - sleep 15
+  - docker-compose run web python keepmealive/maage.py migrate
+  - sleep 5 
   - docker-compose run web python keepmealive/manage.py test keepmealive
 after_success:
   - docker-compose down
