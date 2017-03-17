@@ -21,8 +21,10 @@ before_script:
   - docker-compose up --build -d
   - sleep 15
 script:
+  - docker-compose run web python keepmealive/manage.py makemigrations folders
+  - docker-compose run web python keepmealive/manage.py makemigrations items
+  - docker-compose run web python keepmealive/manage.py makemigrations
   - docker-compose run web python keepmealive/manage.py migrate
-  - sleep 5 
   - docker-compose run web python keepmealive/manage.py test keepmealive
 after_success:
   - docker-compose down
