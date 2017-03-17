@@ -16,10 +16,10 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
 before_script:
   - mv env_travis .env
-  - docker-compose -f docker-compose-ci.yml up -d
+  - docker-compose up -d
 script:
   - docker ps -a 
-  - docker inspect keepmealive_postgresdb_1
-  - docker-compose -f docker-compose-ci.yml run --service-ports web python keepmealive/manage.py test keepmealive
+  - ps aux | grep docker
+  - docker exec -it keepmealive_web_1 python keepmealive/manage.py test keepmealive
 after_success:
   - docker-compose down
