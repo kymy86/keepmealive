@@ -16,7 +16,6 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
 before_script:
   - mv env_travis .env
-  - docker-compose config
   - sudo /etc/init.d/postgresql stop
   - docker-compose up --build -d
   - sleep 15
@@ -24,6 +23,7 @@ script:
   - docker-compose run web python keepmealive/manage.py makemigrations folders
   - docker-compose run web python keepmealive/manage.py makemigrations items
   - docker-compose run web python keepmealive/manage.py makemigrations
+  - docker-compose run web python keepmealive/manage.py migrate auth
   - docker-compose run web python keepmealive/manage.py migrate
   - docker-compose run web python keepmealive/manage.py test keepmealive
 after_success:
