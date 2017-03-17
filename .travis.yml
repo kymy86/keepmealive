@@ -18,11 +18,10 @@ before_script:
   - mv env_travis .env
   - docker-compose config
   - sudo /etc/init.d/postgresql stop
-script:
   - docker-compose up --build -d
-  - docker-compose ps
   - sleep 15
-  - docker-compose run web python keepmealive/maage.py migrate
+script:
+  - docker-compose run web python keepmealive/manage.py migrate
   - sleep 5 
   - docker-compose run web python keepmealive/manage.py test keepmealive
 after_success:
