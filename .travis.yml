@@ -21,6 +21,6 @@ before_script:
 script:
   - docker-compose up --build -d
   - docker-compose ps
-  - docker exec -it keepmealive_web_1 python keepmealive/manage.py test keepmealive
+  - docker-compose run web python keepmealive/manage.py test keepmealive
 after_success:
   - docker-compose down
