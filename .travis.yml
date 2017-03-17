@@ -16,7 +16,7 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
 before_script:
   - mv env_travis .env
-  - netstat -pna | grep 5432
+  - sudo netstat -pna | grep 5432
   - docker-compose up -d
 script:
   - docker ps -a 
