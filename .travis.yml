@@ -16,10 +16,10 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
 before_script:
   - mv env_travis .env
-  - docker-compose down
+  - netstat -nlpt | grep 5432
+  - docker ps -a
   - docker-compose up --build
 script:
-  - docker ps -a 
   - docker exec -it keepmealive_web_1 python keepmealive/manage.py test keepmealive
 after_success:
   - docker-compose down
