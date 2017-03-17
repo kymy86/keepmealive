@@ -16,7 +16,7 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
 before_script:
   - mv env_travis .env
-  - lsof -i :5672 | grep LISTEN
+  - docker-compose down
   - docker-compose up --build
 script:
   - docker ps -a 
