@@ -22,7 +22,7 @@ before_script:
 script:
   - docker-compose run web python keepmealive/manage.py makemigrations
   - docker-compose run web python keepmealive/manage.py migrate
-  - docker-compose run web echo "from django.contrib.auth.models import User; User.objects.create_superuser('travis', 'travis@test.com', 'travis1')" | python keepmealive/manage.py shell
+  - docker-compose run web python keepmealive/manage.py createsuperuser
   - docker-compose run web python keepmealive/manage.py test keepmealive
 after_success:
   - docker-compose down
