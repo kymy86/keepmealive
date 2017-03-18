@@ -22,6 +22,7 @@ before_script:
 script:
   - docker-compose run web python keepmealive/manage.py makemigrations folders
   - docker-compose run web python keepmealive/manage.py makemigrations items
+  - docker-compose run web python keepmealive/manage.py makemigrations keepmealive
   - docker-compose run web python keepmealive/manage.py makemigrations
   - docker-compose run web python keepmealive/manage.py makemigrations auth
   - sleep 5
