@@ -24,7 +24,11 @@ script:
   - docker-compose run web python keepmealive/manage.py makemigrations items
   - docker-compose run web python keepmealive/manage.py makemigrations
   - docker-compose run web python keepmealive/manage.py makemigrations auth
+  - sleep 5
   - docker-compose run web python keepmealive/manage.py migrate auth
+  - sleep 5
+  - docker-compose run web python keepmealive/manage.py migrate
+  - sleep 5
   - docker-compose run web python keepmealive/manage.py test keepmealive
 after_success:
   - docker-compose down
