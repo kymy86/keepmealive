@@ -4,6 +4,7 @@ POSTGRES_DB=keepmealive_db
 POSTGRES_ADDR=postgresdb
 POSTGRES_PORT=5432
 MASTER_KEY=your_master_key
+SECRET_KEY=your_secret_key
 SMTP_PASS=smtp_pass
 SMTP_USER=smtp_user
 SMTP_HOST=smtp_host

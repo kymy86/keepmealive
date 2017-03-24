@@ -22,7 +22,3 @@ class PasswordForgotRequest(models.Model):
 def generate_hash(sender, instance, *args, **kwargs):
     if instance.pk is None:
         instance.hash = uuid.uuid4()
-
-
-
-

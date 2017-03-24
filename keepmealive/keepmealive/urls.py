@@ -15,10 +15,11 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token, verify_jwt_token
-from keepmealive.views import PasswordRecoveryAPIView, PasswordResetAPIView
+from keepmealive.views import PasswordRecoveryAPIView, PasswordResetAPIView, UserApiView
 
 
 urlpatterns = [
+    url(r'^api/users/$', UserApiView.as_view(), name='users'),
     url(r'^api/users/forgot/$', PasswordRecoveryAPIView.as_view(), name='forgot_password'),
     url(r'^api/users/reset/$', PasswordResetAPIView.as_view(), name='reset_password'),
     url(r'^api/folders/', include('folders.urls')),
