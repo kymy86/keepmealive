@@ -11,9 +11,30 @@ class UserSerializer(serializers.Serializer):
     is_active = serializers.BooleanField(default=True)
     is_superuser = serializers.BooleanField(default=False)
     last_login = serializers.DateTimeField(required=False)
+
+class UserUpdateSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = User
-        fields = ('is_staff', 'username', 'email', 'first_name', 'last_name', 'last_login')
+        fields = ('username', 'email', 'first_name', 'last_name', 'is_superuser', 'password', 'is_active')
+    
+    def update(self, instance, validated_data):
+        instance.email = validated.data.get('email', instance.email)
+        instance.username = validated.data.get('username', instance.username)
+        instance.first_name = validated.data.get('first_name', instance.first_name)
+        instance.last_name = validated.data.get('last_name', instance.last_name)
+        instance.is_superuser = validated.data.get('is_superuser', instance.is_superuser)
+        instance.is_active = validated.data.get('is_active', instance.is_active)
+        instance.save()
+        return instance
+
+
+
+class UserReadSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'first_name', 'last_name', 'is_superuser', 'last_login')
+
 
 class PasswordResetSerializer(serializers.Serializer):
     email = serializers.EmailField(required=True)

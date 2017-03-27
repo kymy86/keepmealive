@@ -1,4 +1,4 @@
-from keepmealive.serializers import UserSerializer, PasswordResetSerializer
+from keepmealive.serializers import UserSerializer, PasswordResetSerializer, UserReadSerializer, UserUpdateSerializer
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from django.http import Http404
@@ -12,9 +12,10 @@ from keepmealive.models import PasswordForgotRequest
 from django.conf import settings
 from django.core.mail import send_mail
 from django.db import IntegrityError
+from keepmealive.permissions import IsSuperAdmin
 
 class UserApiView(APIView):
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated, IsSuperAdmin, )
     throttle_classes = (UserRateThrottle, )
 
     queryset = User.objects.all()
@@ -30,18 +31,16 @@ class UserApiView(APIView):
         if user is None:
             raise Http404
 
-        if user == 'me':
-            serializer = UserSerializer(request.user)
+        user_id = int(user)
+        user = get_object_or_404(self.queryset, id=user_id)
+        serializer = UserReadSerializer(user)
         
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     def post(self, request):
         """
-        Create a new user (administrator only can perform this operation)
+        Create a new user
         """
-        if not request.user.is_superuser:
-            return Response('{You\'re not allowed to perform this operation}', status=status.HTTP_403_FORBIDDEN)
-        
         serializer = UserSerializer(data=request.data)
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -55,8 +54,30 @@ class UserApiView(APIView):
             user.first_name=serializer.data['first_name']
             user.save()
         except IntegrityError as e:
-            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(status=status.HTTP_422_UNPROCESSABLE_ENTITY)
         return Response(status=status.HTTP_201_CREATED)
+    
+    def put(self, request):
+        """
+        Update an existing user
+        """
+        user = request.query_params.get('user', None)
+        if user is None:
+            raise Http404
+        
+        user_id = int(user)
+        user = get_object_or_404(self.queryset, id=user_id)
+        serializer = UserUpdateSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer.save()
+        return Response(status=status.HTTP_200_OK)
+    
+    def delete(self, request):
+        """
+        Delete a user
+        """
+        
 
 class PasswordRecoveryAPIView(APIView):
     permission_classes = (AllowAny, )
