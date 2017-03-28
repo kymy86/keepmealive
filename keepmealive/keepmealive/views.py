@@ -64,10 +64,9 @@ class UserApiView(APIView):
         user = request.query_params.get('user', None)
         if user is None:
             raise Http404
-        
         user_id = int(user)
         user = get_object_or_404(self.queryset, id=user_id)
-        serializer = UserUpdateSerializer(data=request.data)
+        serializer = UserUpdateSerializer(user, data=request.data, partial=True)
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         serializer.save()
@@ -77,7 +76,13 @@ class UserApiView(APIView):
         """
         Delete a user
         """
-        
+        user = request.query_params.get('user', None)
+        if user is None:
+            raise Http404
+        user_id = int(user)
+        user = get_object_or_404(self.queryset, id=user_id)
+        user.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 class PasswordRecoveryAPIView(APIView):
     permission_classes = (AllowAny, )

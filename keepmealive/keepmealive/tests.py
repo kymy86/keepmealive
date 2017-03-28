@@ -16,6 +16,122 @@ class AuthorizeTest(APITestCase):
             email='test@test.com',
             password='testpwd'
         )
+        self.superuser = User.objects.create_superuser(
+            username='super',
+            email='super@test.com',
+            password='superpwd'
+        )
+    
+    """
+    Test create user with super user
+    """
+    def test_create_user_w_super(self):
+        url = '/api/auth/token/'
+        data = {
+            'username': 'super',
+            'password': 'superpwd'
+        }
+        response = self.client.post(url, data, format='json')
+        token = response.data['token']
+        url_create = '/api/users/'
+        header = {
+            'HTTP_AUTHORIZATION': 'JWT {}'.format(token)
+        }
+        body = {
+            'username': 'newuser',
+            'password': 'newpass',
+            'email': 'newuser@test.com'
+        }
+        response = self.client.post(url_create, body, format='json', **header)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(User.objects.get(username='newuser').username, 'newuser')
+    
+    """
+    Test create user with a normal user
+    """
+    def test_create_user_w_user(self):
+        url = '/api/auth/token/'
+        data = {
+            'username': 'test',
+            'password': 'testpwd'
+        }
+        response = self.client.post(url, data, format='json')
+        token = response.data['token']
+        url_create = '/api/users/'
+        header = {
+            'HTTP_AUTHORIZATION': 'JWT {}'.format(token)
+        }
+        body = {
+            'username': 'newuser',
+            'password': 'newpass',
+            'email': 'newuser@test.com'
+        }
+        response = self.client.post(url_create, body, format='json', **header)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+    
+    """
+    Test create user with no password
+    """
+    def test_create_user_wn_password(self):
+        url = '/api/auth/token/'
+        data = {
+            'username': 'super',
+            'password': 'superpwd'
+        }
+        response = self.client.post(url, data, format='json')
+        token = response.data['token']
+        url_create = '/api/users/'
+        header = {
+            'HTTP_AUTHORIZATION': 'JWT {}'.format(token)
+        }
+        body = {
+            'username': 'newuser',
+            'email': 'newuser@test.com'
+        }
+        response = self.client.post(url_create, body, format='json', **header)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+    
+    """
+    Test create user that already exists
+    """
+    def test_create_duplicate_user(self):
+        url = '/api/auth/token/'
+        data = {
+            'username': 'super',
+            'password': 'superpwd'
+        }
+        response = self.client.post(url, data, format='json')
+        token = response.data['token']
+        url_create = '/api/users/'
+        header = {
+            'HTTP_AUTHORIZATION': 'JWT {}'.format(token)
+        }
+        body = {
+            'username': 'test',
+            'password': 'testpwd',
+            'email': 'newuser@test.com'
+        }
+        response = self.client.post(url_create, body, format='json', **header)
+        self.assertEqual(response.status_code, status.HTTP_422_UNPROCESSABLE_ENTITY)
+
+    """
+    Test get user only if super-admin
+    """ 
+    def test_get_user_for_super_admin(self):
+        url = '/api/auth/token/'
+        data = {
+            'username': 'test',
+            'password': 'testpwd'
+        }
+        response = self.client.post(url, data, format='json')
+        token = response.data['token']
+        header = {
+            'HTTP_AUTHORIZATION': 'JWT {}'.format(token)
+        }
+        url_get = '/api/users/?user=2'
+        response = self.client.get(url_get, **header)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
     
     """
     Test right authentication
