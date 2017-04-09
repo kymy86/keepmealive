@@ -113,6 +113,49 @@ class AuthorizeTest(APITestCase):
         }
         response = self.client.post(url_create, body, format='json', **header)
         self.assertEqual(response.status_code, status.HTTP_422_UNPROCESSABLE_ENTITY)
+    
+    """
+    Test update user properties
+    """
+    def test_update_user(self):
+        url = '/api/auth/token/'
+        data = {
+            'username': 'super',
+            'password': 'superpwd'
+        }
+        response = self.client.post(url, data, format='json')
+        token = response.data['token']
+        url_update = '/api/users/?user='+str(self.user.id)
+        header = {
+            'HTTP_AUTHORIZATION': 'JWT {}'.format(token)
+        }
+        body = {
+            'username': 'test2',
+            'password': 'testpwd2',
+            'email': 'newuser2@test.com',
+            'first_name': 'updateName',
+            'last_name': 'updateSurname'
+        }
+        response = self.client.put(url_update, body, format='json', **header)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+    
+    """
+    Test delete user
+    """
+    def test_delete_user(self):
+        url = '/api/auth/token/'
+        data = {
+            'username': 'super',
+            'password': 'superpwd'
+        }
+        response = self.client.post(url, data, format='json')
+        token = response.data['token']
+        url_update = '/api/users/?user='+str(self.user.id)
+        header = {
+            'HTTP_AUTHORIZATION': 'JWT {}'.format(token)
+        }
+        response = self.client.delete(url_update, format='json', **header)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
     """
     Test get user only if super-admin
