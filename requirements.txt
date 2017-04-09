@@ -6,3 +6,6 @@ django-filter==1.0.1
 psycopg2
 pycrypto
 djangorestframework-jwt
+coreapi
+pygments
+drfdocs

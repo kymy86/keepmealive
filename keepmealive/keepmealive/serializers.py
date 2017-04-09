@@ -30,8 +30,6 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
-
-
 class UserReadSerializer(serializers.ModelSerializer):
     class Meta:
         model = User

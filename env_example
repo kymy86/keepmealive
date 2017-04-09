@@ -10,3 +10,4 @@ SMTP_USER=smtp_user
 SMTP_HOST=smtp_host
 SMTP_PORT=smtp_port
 DEBUG=True
+HIDE_DRFDOC=False

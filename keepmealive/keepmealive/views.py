@@ -15,6 +15,9 @@ from django.db import IntegrityError
 from keepmealive.permissions import IsSuperAdmin
 
 class UserApiView(APIView):
+    """
+    API views that manage application users
+    """
     permission_classes = (IsAuthenticated, IsSuperAdmin, )
     throttle_classes = (UserRateThrottle, )
 
@@ -85,13 +88,16 @@ class UserApiView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class PasswordRecoveryAPIView(APIView):
+    """
+    API views that manages the recovery password process
+    """
     permission_classes = (AllowAny, )
     throttle_classes = (AnonRateThrottle, )
 
     queryset = User.objects.all()
 
-    """ send recovery email if the username exists """
     def get(self, request):
+        """ send recovery email if the username exists """
         # if username isn't in the get request, raise a 404 error
         username = request.query_params.get('username', None)
         if username is None:
@@ -119,6 +125,9 @@ class PasswordRecoveryAPIView(APIView):
         return Response(status=status.HTTP_202_ACCEPTED)
 
 class PasswordResetAPIView(APIView):
+    """
+    API views that manage reset password process
+    """
     permission_classes = (AllowAny, )
     throttle_classes = (AnonRateThrottle, )
 

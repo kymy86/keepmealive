@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     #third parties
     'rest_framework',
+    'rest_framework_docs',
     #local apps
     'keepmealive',
     'folders',
@@ -97,6 +98,10 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10,
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'TEST_REQUEST_DEFAULT_FORMAT': 'json'
+}
+
+REST_FRAMEWORK_DOCS = {
+    'HIDE_DOCS': os.environ.get('HIDE_DRFDOCS', False)
 }
 
 WSGI_APPLICATION = 'keepmealive.wsgi.application'

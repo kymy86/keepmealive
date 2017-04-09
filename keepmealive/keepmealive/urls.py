@@ -27,5 +27,6 @@ urlpatterns = [
     url(r'^api/auth/token/', obtain_jwt_token),
     url(r'^api/refresh/token/', refresh_jwt_token),
     url(r'^api/verify/token/', verify_jwt_token),
+    url(r'^docs/', include('rest_framework_docs.urls'))
 ]
 
