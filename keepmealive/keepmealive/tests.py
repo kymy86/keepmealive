@@ -5,7 +5,7 @@ from keepmealive.models import PasswordForgotRequest
 from django.contrib.auth.models import User
 
 
-class AuthorizeTest(APITestCase):
+class UserTest(APITestCase):
 
     """
     Create a new user

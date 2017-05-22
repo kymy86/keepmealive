@@ -4,7 +4,7 @@ from folders.models import Folder
 from items.models import Item
 from django.contrib.auth.models import User
 
-class ItemTests(APITestCase):
+class ItemTest(APITestCase):
 
     def setUp(self):
         self.users = User.objects.create_user(
